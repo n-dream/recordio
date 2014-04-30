@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>RecordIO loadtest</title>
+    <style type="text/css">
+      body {
+        padding: 100px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+    </style>
+  </head>
+  <body>
+  <form method=POST>
+    <input type=submit name=delete value="Delete loadtest recordIOs"><br><br>
+    Entries to write: <input type=text name=entries value="{{entries}}"><br>
+    Min size of an entry: <input type=text name=entry_size_min value="{{entry_size_min}}"><br>
+    Max size of an entry: <input type=text name=entry_size_max value="{{entry_size_max}}"><br>
+    Amount of different keys: <input type=text name=entry_size_key value={{entry_size_key}}><br>
+    <input type=checkbox name=run_uncompressed value=checked {{run_uncompressed}}> Test uncompressed<br>
+    <input type=checkbox name=run_compressed value=checked {{run_compressed}}> Test compressed, 
+    compressable to: <select name=compressable>
+      <option{% ifequal compressable "15%" %} selected{% endifequal %}>15%</option>
+      <option{% ifequal compressable "25%" %} selected{% endifequal %}>25%</option>
+      <option{% ifequal compressable "50%" %} selected{% endifequal %}>50%</option>
+      <option{% ifequal compressable "75%" %} selected{% endifequal %}>75%</option>
+    </select><br>
+    <input type=submit>
+  </form>
+  {% if ran %}
+  {% if run_uncompressed %}
+  <h3>Uncompressed</h3>
+  Write time: {{write_uncompressed.0}}s<br>
+  Write dbstats: {{write_uncompressed.1}}<br>
+  Read time: {{read_uncompressed.0}}s<br>
+  Read dbstats:{{read_uncompressed.1}}<br>
+  {% endif %}
+  {% if run_compressed %}
+  <h3>Compressed</h3>
+  Write time: {{write_compressed.0}}s<br>
+  Write dbstats: {{write_compressed.1}}<br>
+  Read time: {{read_compressed.0}}s<br>
+  Read dbstats:{{read_compressed.1}}<br>
+  {% endif %}
+  {% endif %}
+  {{gae_profiler_includes|safe}}
+  </body>
+</html>

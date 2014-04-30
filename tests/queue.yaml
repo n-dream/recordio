@@ -1,0 +1,9 @@
+total_storage_limit: 10G
+
+queue:
+- name: recordio-queue
+  mode: pull
+- name: recordio-writer
+  rate: 100/s
+  bucket_size: 100
+  

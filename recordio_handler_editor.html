@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <title>RecordIO Editor{%if name %}- {{name}}{% endif %}</title>
+    <style type="text/css">
+      body {
+        padding: 20px;
+        font-family: Arial;
+        font-size: 13px;
+      }
+      
+      table {
+        width: 100%;
+        font-size: 13px;
+      }
+      
+      th {
+        background-color: #F3F3F3;
+        padding: 4px;
+        text-align: left;
+      }
+      
+      td {
+        padding: .35em 1em .25em .35em;
+        vertical-align: top;
+        border-top: 1px solid #F3F3F3;
+      }
+      
+      a {
+        color: #0000FF;
+        text-decoration: None;
+      }
+      
+      .edit {
+        vertical-align: middle;
+      }
+      
+    </style>
+  </head>
+  <body>
+  {% if name %}
+  <a href="/recordio/">&lt; RecordIOs Index</a>
+  <h1>{{name}}</h1>
+  <table cellspacing=0 cellpadding=0>
+  <tr><th>Key</th><th>Value</th><th width=40></th></tr>
+  {% for key, value in key_values %}
+  <tr><td>{{key}}</td><td>{{value}}</td>
+  <td width=40>
+    <form method=POST onsubmit="return confirm('Are you sure?')">
+      <input type=hidden name=key value="{{key}}"><input type=submit value="Delete">
+    </form>
+  </td>
+  {% endfor %}
+  </table>
+  {% if next or start %}
+  <br>
+  {% if start %}
+  <a href="?name={{name}}">&lt; Back to beginning</a>
+  {% endif %}
+  {% if next %}
+  <a href="?name={{name|urlencode}}&start={{next|urlencode}}">Next &gt;</a>
+  {% endif %}
+  {% endif %}
+  <br><br>
+  <form method=POST>
+  <h2>Edit an entry</h2>
+  <table cellspacing=0 cellpadding=0>
+  <tr><th>Key (String)</th><th>Value (python expression)</th>
+  <tr>
+    <td width=100>
+      <input type=text name=key>
+    </td><td>
+      <input type=text name=value size=135>
+      <input type=submit value="Save">
+  </td></tr>
+  </table>
+  </form>
+  {% else %}
+  <h1>RecordIO</h1>
+  <table cellspacing=0 cellpadding=0>
+  <tr><th>Names</th><th></th></tr>
+  {% for name in names %}
+  <tr>
+    <td><a href="?name={{name|urlencode}}">{{name}}</a></td>
+    <td width=40>
+      <form method=POST onsubmit="return confirm('Are you sure?')">
+        <input type=hidden name="delete" value="{{name}}">
+        <input type=submit value="Delete">
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+  </table>
+  <br><br>
+  <table cellspacing=0 cellpadding=0>
+  <tr><th>Create new RecordIO</th></tr>
+  <tr><td class=edit>Name: 
+  <form method=POST>
+    <input type=text name=name> Compressed:<input type=checkbox name=compressed value=1><input type=submit>
+  </form>
+  </td></tr>
+  </table> 
+  {% endif %}
+  </body>
+</html>
