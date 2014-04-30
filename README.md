@@ -127,7 +127,9 @@ SomeString
 For all write operations you will use the ```RecordIOWriter``` class.
 
 
-#### RecordIOWriter constructor
+#### RecordIOWriter
+
+Constructor
 
 ```RecordIOWriter(name)```
 
