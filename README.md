@@ -2,9 +2,9 @@
 
 ## What are RecordIOs
 
-A RecordIO consists of a sorted list of key value pairs that can be
-persistently stored in Google App Engine. RecordIOs can hold terabytes of data.
+A RecordIO is a database for (key, value) pairs for Google App Engine.
 
+- RecordIOs can hold terabytes of data.
 - Extremely efficient in writing many small entries.
 - Extremely powerful because the size of entry can exceed 1MB, which means you
   can store bigger objects in RecordIOs than in App Engines Datastore.
