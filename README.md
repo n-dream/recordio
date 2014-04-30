@@ -36,7 +36,7 @@ are applied to the shards in datastore, they are queued in a normal TaskQueue.
 
 ## Installation
 
-Please add the following lines to your ```app.yaml```
+Please add the following lines to your `app.yaml`
 
 ```
 handlers:
@@ -46,7 +46,7 @@ handlers:
 
 ```
 
-Please add the following lines to your ```queue.yaml```
+Please add the following lines to your `queue.yaml`
 
 ```
 total_storage_limit: 1T
@@ -60,7 +60,7 @@ queue:
   mode: pull
 ```
 
-It is advised that you set the ```total_storage_limit``` to a big value if you
+It is advised that you set the `total_storage_limit` to a big value if you
 are going to write a lot of data to RecordIOs asynchronously.
 
 ## Usage
@@ -84,8 +84,7 @@ writer.commit_async()
 writer.commit_sync()
 ```
 
-#### Reading
-All data:
+#### Reading all data
 ```python
 from recordio import RecordIOReader
 
@@ -101,7 +100,8 @@ HelloPickle somePickleableObject
 HelloString SomeString
 ```
 
-A certain range:
+#### Reading a certain range
+
 ```python
 for key, value in reader.read(start_key="HelloP", end_key="HelloZ"):
   print key, value
@@ -112,7 +112,7 @@ HelloPickle somePickleableObject
 HelloString SomeString
 ```
 
-A single element:
+#### Reading a single element
 ```python
 print reader["HelloString"]
 ```
@@ -124,14 +124,14 @@ SomeString
 
 ### Writing to a RecordIO
 
-For all write operations you will use the ```RecordIOWriter``` class.
+For all write operations you will use the `RecordIOWriter` class.
 
 
 #### RecordIOWriter
 
 Constructor
 
-```RecordIOWriter(name)```
+`RecordIOWriter(name)`
 
 Arguments:
 
@@ -142,7 +142,7 @@ Arguments:
 Before you can write to a RecordIO, you need to create the RecordIO.
 If a RecordIO with this name already exists, it is untouched.
 
-```create(self, compressed=True, pre_split=[])```
+`create(self, compressed=True, pre_split=[])`
 
 Arguments:
 
@@ -158,7 +158,7 @@ Returns True, if the RecordIO didn't exist before.
 
 Assigns a value to a certain key. Overwrites existing values with the same key.
 
-```insert(self, key, value)```
+`insert(self, key, value)`
 
 Arguments:
 
@@ -169,18 +169,18 @@ Arguments:
 
 #### Removing elements from a RecordIO
 
-```remove(self, key)```
+`remove(self, key)`
 
 Arguments:
 
 - key: A key of a previously inserted value. If this key does not exist, no
        exception is thrown.
 
-#### Applying the changes
+#### Applying the changes synchronously
 
-```commit_sync()``` writes the changes synchronously to the RecordIO.
+`commit_sync()` writes the changes synchronously to the RecordIO.
 
-```commit_sync(self, retries=32, retry_timeout=1)```
+`commit_sync(self, retries=32, retry_timeout=1)`
 
 Arguments:
 
@@ -188,11 +188,13 @@ Arguments:
            collisions.
 - retry_timeout: The amount of second to wait before the next retry.
 
-```commit_async()``` writes the changes asynchronously to
+#### Applying the changes asynchronously
+
+`commit_async()` writes the changes asynchronously to
 the RecordIO and automatically batches other pending writes to the same
 RecordIO (Cheaper and more efficient than synchronous commits).
 
-```commit_async(self, write_every_n_seconds=300)```
+`commit_async(self, write_every_n_seconds=300)`
 
 Arguments:
 
@@ -201,19 +203,19 @@ Arguments:
 
 #### Deleting a RecordIO
 
-```delete(self)```
+`delete(self)`
 
 Deletes a RecordIO. Modifying RecordIOs or applying queued writes may result
 in errors during deletions.
 
 ### Reading from a RecordIO
 
-For all read operations you will use the ```RecordIOReader``` class.
+For all read operations you will use the `RecordIOReader` class.
 
 
 #### RecordIOReader constructor
 
-```RecordIOReader(name)```
+`RecordIOReader(name)`
 
 Arguments:
 
@@ -221,17 +223,17 @@ Arguments:
 
 #### Reading all entries:
 
-```for key, value in RecordIOReader('name')```
+`for key, value in RecordIOReader('name')`
 
-Returns a tuple of ```key, value```.
+Returns a tuple of `key, value`.
 
-Reads sequentially through the sorted RecordIO and yields ```key, value```.
+Reads sequentially through the sorted RecordIO and yields `key, value`.
 The values are already parsed (have the same type like when they were
 inserted).
 
 #### Reading through a range of entries:
 
-```read(self, start_key="", end_key=None, limit=None)```
+`read(self, start_key="", end_key=None, limit=None)`
 
 Arguments:
 
@@ -239,26 +241,26 @@ Arguments:
 - end_key: The ending key (exclusive).
 - limit: Integer, the maximum amount of entries to be read.
 
-Returns a tuple of ```key, value```.
+Returns a tuple of `key, value`.
 
 #### Reading a single element:
 
 Returns a single element. If possible scan through ranges instead.
 
-```for x in RecordIOReader('name')['key']```
+`for x in RecordIOReader('name')['key']`
 
 Returns the value for a certain key.
 
 ## RecordIO Handlers:
 
 ### RecordIOViewer
-Is available at ```/recordio/```.
+Is available at `/recordio/`.
 
 ### RecordIOWriter
 In case you have asynchronous pending writes that somehow never get applied
 (this should never happen unless you accidentally emptied worker queues)
-you can go to ```/recordio/write``` to schedule the writers again.
+you can go to `/recordio/write` to schedule the writers again.
 
 ### RecordIOLoadtest
 If you want to loadtest RecordIOs and find out what fine tuning is best for
-you, mess around in ```/recordio/loadtest```.
+you, mess around in `/recordio/loadtest`.
