@@ -25,9 +25,9 @@ pre-set amount of time, all writes are applied at the same time and combined
 whenever possible. This minimizes datastore operations and therefor costs.
 
 #### Store objects of arbitrary size
-RecordIO can store objects of any size. If insert an object that is bigger than
-1MB it gets split into smaller chunks and distributed over multiple datastore
-entries, all automagically.
+RecordIO can store objects of any size. If you insert an object that is bigger
+than 1MB it gets split into smaller chunks and distributed over multiple
+datastore entries, all automagically.
 
 ### Where are RecordIOs stored?
 
